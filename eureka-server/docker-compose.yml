@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  code-advisors-eureka-server:
+    container_name: code-advisors-eureka-server
+    build:
+      context: . # Use the current directory for building
+    ports:
+      - "1761:8761" # Map the application port
+    #    environment:
+    #      SPRING_PROFILES_ACTIVE: prod # Set Spring profile if needed
+    volumes:
+      - code-advisors-eureka-logs:/app/logs # Optional: Map logs to a local directory
+
+volumes:
+  code-advisors-eureka-logs:
+
+networks:
+  default:
+    external:
+      name: code-advisors-network

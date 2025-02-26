@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: community-engagement-service
+
+  profiles:
+    active: dev
+  config:
+    import: "configserver:"
+
+  cloud:
+    config:
+      uri: http://202.178.125.77:9999
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

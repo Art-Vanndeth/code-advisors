@@ -1,0 +1,20 @@
+services:
+  code-advisors-ui:
+    image: code-advisors-admin-ui
+    container_name: code-advisors-admin-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 1001:3001
+    environment:
+      # - NODE_ENV=production
+      - GENERATE_SOURCEMAP=false
+    networks:
+      - code-advisors-network
+
+
+networks:
+  code-advisors-network:
+    external: true

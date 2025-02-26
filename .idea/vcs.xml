@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/admin-gateway-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code-advisor-admin-ui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/code-advisor-ui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/config-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/configuration-CodeAdvisors" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/content-discovery" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/content-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deployment-script" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/deployment-services" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elastic-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/engagement-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/eureka-server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/forum-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gateway-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/identity-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kafka-full-stack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/media-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/notification-service" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/user-profile" vcs="Git" />
+  </component>
+</project>

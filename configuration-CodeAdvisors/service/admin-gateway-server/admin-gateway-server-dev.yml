@@ -1,0 +1,105 @@
+
+
+  spring:
+    security:
+      oauth2:
+        client:
+          provider:
+            code-advisor:
+              issuer-uri: http://127.0.0.1:9090
+              authorization-uri: http://127.0.0.1:9090/oauth2/authorize
+              token-uri: http://127.0.0.1:9090/oauth2/token
+          registration:
+
+            # Register CodeAdvisor Service
+            code-advisor:
+              provider: code-advisor
+              client-id: code-advisor
+              client-secret: qwerqwer
+              authorization-grant-type:
+                - authorization_code
+              scope: openid, profile, email
+              redirect-uri: http://127.0.0.1:8169/login/oauth2/code/code-advisor
+    cloud:
+      gateway:
+        discovery:
+          locator:
+            enabled: false
+            lower-case-service-id: true
+        default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin Access-Control-Request-Headers
+          - SaveSession
+        routes:
+          - id: identity # Register Identity Service
+            uri: http://127.0.0.1:9090
+            predicates:
+              - Path=/identity/**
+            filters:
+              - TokenRelay=
+              - RewritePath=/identity/(?<segment>.*),/$\{segment}
+
+          - id: content-service # Register Frontend (NextJS)
+            uri: http://127.0.0.1:8082
+            predicates:
+              - Path=/contents/**
+            filters:
+              - TokenRelay=
+              - RewritePath=/contents/(?<segment>.*),/$\{segment}
+
+          # - id: forum-code-advisors
+          #   uri: http://127.0.0.1:8081
+          #   predicates:
+          #     - Path=/forums/**
+          #   filters:
+          #     - TokenRelay=
+          #     - RewritePath=/forums/(?<segment>.*),/$\{segment}
+          - id: forum-code-advisors
+            uri: http://127.0.0.1:8081
+            predicates:
+              - Path=/forums/**
+            filters:
+              - TokenRelay=
+              - RewritePath=/forums/(?<segment>.*),/$\{segment}
+
+          - id: user-service
+            uri: http://127.0.0.1:8085
+            predicates:
+              - Path=/users/**
+            filters:
+              - TokenRelay=
+              - RewritePath=/users/(?<segment>.*),/$\{segment}
+
+          - id: media-service
+            uri: http://167.172.78.79/:8090
+            predicates:
+              - Path=/media/**
+            filters:
+              - TokenRelay=
+              - RewritePath=/users/(?<segment>.*),/$\{segment}
+
+          - id: nextjs-static-assets
+            uri: http://127.0.0.1:3001  # Forward to Next.js frontend
+            predicates:
+              - Path=/static/**,/_next/**  # Match static asset paths
+            filters:
+              - TokenRelay=  # Ensure authentication is enforced (optional for static assets)
+
+          - id: codeAdvisor-admin-ui
+            uri: http://127.0.0.1:3001  # Forward to Next.js frontend
+            predicates:
+              - Path=/**  # Match all other paths
+            filters:
+              - TokenRelay=  # Ensure authentication is enforced
+          
+          
+
+
+
+  eureka:
+    instance:
+      preferIpAddress: true
+    client:
+      fetchRegistry: true
+      registerWithEureka: true
+      serviceUrl:
+        defaultZone: http://localhost:8761/eureka/

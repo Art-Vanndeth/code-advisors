@@ -1,0 +1,50 @@
+spring.application.name: config-server
+
+#spring:
+#  profiles:
+#    active: native
+#
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:///D:/ITE Advanced/yelpMSConfig/service/{application},file:///D:/ITE Advanced/yelpMSConfig/
+
+spring:
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/CodeAdvisor-ISTAD/configuration-CodeAdvisors.git
+          search-paths: '/service/**'
+          default-label: main
+
+
+server:
+  port: 8888
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://202.178.125.77:8761/eureka/
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

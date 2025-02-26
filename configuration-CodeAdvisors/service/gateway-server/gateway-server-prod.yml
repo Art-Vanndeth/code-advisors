@@ -1,0 +1,111 @@
+server:
+  port: 8168
+  forward-headers-strategy: framework
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          code-advisor:
+            issuer-uri: http://202.178.125.77:9090 #https://identity.code-advisors.istad.co  # 
+        registration:
+          # Register CodeAdvisor Service
+          code-advisor:
+            provider: code-advisor
+            client-id: code-advisor
+            client-secret: qwerqwer
+            authorization-grant-type:
+              - authorization_code
+            scope: openid, profile, email, ADMIN, USER
+            redirect-uri: http://202.178.125.77:1168/login/oauth2/code/code-advisor #https://code-advisors.istad.co/login/oauth2/code/code-advisor  
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin Access-Control-Request-Headers
+        - SaveSession
+      routes:
+        - id: identity # Register Identity Service
+          uri: http://202.178.125.77:9090
+          predicates:
+            - Path=/identity/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/identity/(?<segment>.*),/$\{segment}
+
+        - id: content-service # Register Frontend (NextJS)
+          uri: http://202.178.125.77:1082
+          predicates:
+            - Path=/contents/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/contents/(?<segment>.*),/$\{segment}
+
+        - id: forum-code-advisors
+          uri: http://202.178.125.77:1081
+          predicates:
+            - Path=/forums/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/forums/(?<segment>.*),/$\{segment}
+
+        - id: user-service
+          uri: http://202.178.125.77:1085
+          predicates:
+            - Path=/users/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/users/(?<segment>.*),/$\{segment}
+
+        - id: media-service
+          uri: http://167.172.78.79:8090
+          predicates:
+            - Path=/media/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/users/(?<segment>.*),/$\{segment}
+
+        - id: notification-service
+          uri: http://202.178.125.77:1084
+          predicates:
+            - Path=/notifications/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/notifications/(?<segment>.*),/$\{segment}
+
+        - id: community-engagement-service
+          uri: http://202.178.125.77:1086
+          predicates:
+            - Path=/ces/**
+          filters:
+            - TokenRelay=
+            - RewritePath=/ces/(?<segment>.*),/$\{segment}
+
+        - id: codeAdvisor-ui # Register Frontend (NextJS)
+          uri: http://202.178.125.77:1000
+          predicates:
+            - Path=/**
+          filters:
+            - TokenRelay=
+
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://202.178.125.77:1761/eureka/
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG

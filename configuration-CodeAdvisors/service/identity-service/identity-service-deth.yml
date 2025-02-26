@@ -1,0 +1,100 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://identity.code-advisors.istad.co
+      client:
+        registration:
+          google:
+            client-id: 702679122858-60kc4e1pjeect3l56lm0r96lchpf27pt.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: https://identity.code-advisors.istad.co/login/oauth2/code/google
+          github:
+            client-id: Iv23ctxuu5KORhYj9WmU
+            client-secret: 72a0728424dd1934bd95919b5540ffb42f02abbd
+            redirect-uri: https://identity.code-advisors.istad.co/login/oauth2/code/github
+  kafka:
+    bootstrap-servers:
+      - 34.143.151.53:29093
+      - 34.143.151.53:39093
+      - 34.143.151.53:49093
+      # - 167.172.78.79:29093
+      # - 167.172.78.79:39093
+      # - 167.172.78.79:49093   
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "*"
+    consumer:
+      group-id: user-service
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: co.istad.identityservice.config.kafka.eventClass.UpdateUserEvent
+    security:
+      protocol: SSL
+    ssl:
+      trust-store-location: file:/app/kafka.server.truststore.jks
+      trust-store-password: password123
+      key-store-location: file:/app/kafka.server.keystore.jks
+      key-store-password: password123
+      key-password: password123
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://202.178.125.77:5402/oauth2
+    username: oauth2
+    password: Code@Advisors2024
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: istad.codeadvisors@gmail.com
+    password: urfl rzjr zbcn jsvn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 9090
+
+logging:
+  level:
+    org:
+      springframework:
+        #        web: DEBUG
+        #        mail: DEBUG
+        security: DEBUG
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://code-advisors-eureka-server:8761/eureka
+
+
+code-advisors:
+  ip: 202.178.125.77
+  port: 1168
+
+redirect:
+  url: https://code-advisors.istad.co/
+
+issuer:
+  url: https://identity.code-advisors.istad.co

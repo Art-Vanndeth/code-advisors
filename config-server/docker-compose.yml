@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  code-advisors-config-server:
+    image: code-advisors-config-server:latest
+    container_name: code-advisors-config-server
+    build:
+      context: . # Use the current directory for building
+    ports:
+      - "9999:8888" # Map the application port
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod # Set Spring profile if needed
+    volumes:
+      - code-advisors-config-server-logs:/app/logs # Optional: Map logs to a local directory
+
+volumes:
+  code-advisors-config-server-logs:

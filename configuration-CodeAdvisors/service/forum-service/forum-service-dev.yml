@@ -1,0 +1,52 @@
+# forum-service : dev
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9090
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://202.178.125.77:5401/postgres
+    username: admin
+    password: Code@Advisors2024
+  kafka:
+    bootstrap-servers:
+      - 34.143.151.53:29093
+      - 34.143.151.53:39093
+      - 34.143.151.53:49093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "*"
+    security:
+      protocol: SSL
+    ssl:
+      trust-store-location: classpath:kafka.server.truststore.jks
+      trust-store-password: password123
+      key-store-location: classpath:kafka.server.keystore.jks
+      key-store-password: password123
+      key-password: password123
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: debug
+
+server:
+  port: 8081

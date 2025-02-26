@@ -1,0 +1,19 @@
+services:
+  code-advisors-identity-service:
+    container_name: code-advisors-identity-service # Set the container name
+    build:
+      context: . # Use the current directory for building
+    ports:
+      - "9090:9090" # Map the application port
+    environment:
+      SPRING_PROFILES_ACTIVE: prod # Set Spring profile if needed
+    volumes:
+      - code-advisors-identity-logs:/app/logs # Optional: Map logs to a local directory
+
+volumes:
+  code-advisors-identity-logs:
+
+networks:
+  default:
+    external:
+      name: code-advisors-network

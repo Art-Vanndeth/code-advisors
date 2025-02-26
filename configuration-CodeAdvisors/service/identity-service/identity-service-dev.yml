@@ -1,0 +1,98 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9090
+      client:
+        registration:
+          google:
+            client-id: 897037474382-vgr82njacir6c71vbcbrtuinhr3h2p4r.apps.googleusercontent.com
+            client-secret: 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
+          github:
+            client-id: Iv23liBU3E9AkNiEfed2
+            client-secret: cca664d184ea46d005f9602f7e9ab1fbb560ba07
+  kafka:
+    bootstrap-servers:
+      # - 167.172.78.79:29093
+      # - 167.172.78.79:39093
+      # - 167.172.78.79:49093
+      - 34.143.151.53:29093
+      - 34.143.151.53:39093
+      - 34.143.151.53:49093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "*"
+    consumer:
+      group-id: user-service
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: co.istad.identityservice.config.kafka.eventClass.UpdateUserEvent
+
+    security:
+      protocol: SSL
+    ssl:
+      trust-store-location: classpath:kafka.server.truststore.jks
+      trust-store-password: password123
+      key-store-location: classpath:kafka.server.keystore.jks
+      key-store-password: password123
+      key-password: password123
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://202.178.125.77:5402/oauth2
+    username: oauth2
+    password: Code@Advisors2024
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: istad.codeadvisors@gmail.com
+    password: urfl rzjr zbcn jsvn
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 9090
+
+logging:
+  level:
+    org:
+      springframework:
+        #        web: DEBUG
+        #        mail: DEBUG
+        security: DEBUG
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+code-advisors:
+  ip: 127.0.0.1
+  port: 8168
+
+redirect:
+  url: http://127.0.0.1:8168
+
+issuer:
+  url: http://127.0.0.1:9090

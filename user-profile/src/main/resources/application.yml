@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: dev
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      uri: http://202.178.125.77:9999
+  application:
+    name: user-service
+logging:
+  level:
+    org.springframework.kafka.listener: DEBUG
+    org.springframework.kafka.core: DEBUG
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

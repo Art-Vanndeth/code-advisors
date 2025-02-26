@@ -1,0 +1,44 @@
+spring.application.name: content-service
+
+spring:
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://202.178.125.77:9999
+#  kafka:
+#    security:
+#      protocol: SSL
+#    ssl:
+#      trust-store-location: classpath:kafka.server.truststore.jks
+#      trust-store-password: password123
+#      key-store-location: classpath:kafka.server.keystore.jks
+#      key-store-password: password123
+#      key-password: password123
+
+
+logging:
+  level:
+    org:
+      springframework:
+        #        web: DEBUG
+        #        mail: DEBUG
+        security: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+
+

@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: notification-service
+  data:
+    mongodb:
+      uri: mongodb://202.178.125.77:5403/db-notification
+  kafka:
+    bootstrap-servers:
+      # - 202.178.125.77:29093
+      # - 202.178.125.77:39093
+      # - 202.178.125.77:49093
+      # - 167.172.78.79:29093
+      # - 167.172.78.79:39093
+      # - 167.172.78.79:49093
+
+      - 34.143.151.53:29093
+      - 34.143.151.53:39093
+      - 34.143.151.53:49093
+    security:
+      protocol: SSL
+    ssl:
+      trust-store-location: file:/app/kafka.server.truststore.jks
+      trust-store-password: password123
+      key-store-location: file:/app/kafka.server.keystore.jks
+      key-store-password: password123
+      key-password: password123
+      
+    # security:
+    #   protocol: SSL
+    # ssl:
+    #   trust-store-location: classpath:kafka.server.truststore.jks
+    #   trust-store-password: password123
+    #   key-store-location: classpath:kafka.server.keystore.jks
+    #   key-store-password: password123
+    #   key-password: password123
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      enable-auto-commit: true
+      group-id: notification-service
+      auto-offset-reset: latest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+    listener:
+      missing-topics-fatal: false
+
+  cloud:
+    stream:
+      bindings:
+        notificationProcessor-in-0:
+          destination: notifications
+          content-type: application/json
+        notificationProcessor-out-0:
+          destination: processed-notifications
+          content-type: application/json
+eureka:
+  client:
+    service-url:
+      defaultZone: http://202.178.125.77:1761/eureka/
+      # defaultZone: https://eureka-service.cloudinator.cloud/eureka/
+  instance:
+    prefer-ip-address: true
+
+kafka:
+  topic:
+
+    # content service
+    comment-created: comment-created-events-topic
+    comment-replied: comment-replied-events-topic
+    comment-reported: comment-reported-events-topic
+    content-reacted: content-reacted-events-topic
+    content-reported: content-reported-events-topic
+
+    # other services
+    content-created: content-created-events-topic
+    question-created: question-created-events-topic
+    question-voted: question-voted-events-topic
+    answer-created: answer-created-events-topic
+    answer-replied: answer-replied-events-topic
+    answer-voted: answer-voted-events-topic
+    answer-accepted: answer-accepted-events-topic
+
+    # forum service
+    forum-answer-created: forum-answer-created-events-topic
+    forum-reply-created: forum-reply-created-events-topic
+
+
+server:
+  port: 8084

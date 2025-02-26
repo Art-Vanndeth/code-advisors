@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: notification-service
+  profiles:
+    active: dev
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      uri: http://202.178.125.77:9999
+#      uri: http://167.172.78.79:8888
+
+kafka:
+  topic:
+
+    # content service
+    comment-created: comment-created-events-topic
+    comment-replied: comment-replied-events-topic
+    comment-reported: comment-reported-events-topic
+    content-reacted: content-reacted-events-topic
+    content-reported: content-reported-events-topic
+
+    # other services
+    content-created: content-created-events-topic
+    question-created: question-created-events-topic
+    question-voted: question-voted-events-topic
+    answer-created: answer-created-events-topic
+    answer-replied: answer-replied-events-topic
+    answer-voted: answer-voted-events-topic
+    answer-accepted: answer-accepted-events-topic
+
+    # forum service
+    forum-answer-created: forum-answer-created-events-topic
+    forum-reply-created: forum-reply-created-events-topic

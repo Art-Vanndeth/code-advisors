@@ -1,0 +1,142 @@
+version: "3.8"
+
+networks:
+  codeAdvisors-network:
+    driver: bridge
+
+volumes:
+  postgres-codeAdvisors:
+  postgres-codeAdvisors-oauth2:
+  mongo-primary-data:
+  mongo-replica-1-data:
+  mongo-replica-2-data:
+
+services:
+  # PostgreSQL for main database
+  postgres-codeAdvisors:
+    container_name: "codeAdvisors-postgres"
+    image: "debezium/postgres:16-alpine"
+    ports:
+      - "5401:5432"
+    volumes:
+      - "./config/postgres/postgresql.conf:/usr/share/postgresql/postgresql.conf"
+      - "./config/postgres/postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql"
+      - "postgres-codeAdvisors:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Code@Advisors2024
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "admin", "-d", "admin"]
+      interval: 20s
+      timeout: 3s
+      retries: 5
+    networks:
+      - codeAdvisors-network
+
+  # PostgreSQL for OAuth2
+  postgres-codeAdvisors-oauth2:
+    container_name: "postgres-codeAdvisors-oauth2"
+    image: "debezium/postgres:16-alpine"
+    ports:
+      - "5402:5432"
+    volumes:
+      - "postgres-codeAdvisors-oauth2:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=oauth2
+      - POSTGRES_PASSWORD=Code@Advisors2024
+      - POSTGRES_DB=oauth2
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "oauth2", "-d", "oauth2"]
+      interval: 20s
+      timeout: 3s
+      retries: 5
+    networks:
+      - codeAdvisors-network
+  mongo1:
+    image: "mongodb-kafka-base-mongod:1.0"
+    container_name: mongo1
+    ports:
+      - "35001:27017"
+    build:
+      context: .
+      dockerfile: mongo.Dockerfile
+    command: --replSet rs0 --oplogSize 128
+    networks:
+      - codeAdvisors-network
+    restart: always
+
+  mongo1-setup:
+    image: "mongodb-kafka-base-setup-mongod:1.0"
+    container_name: mongo1-setup
+    build:
+      context: .
+      dockerfile: mongo.Dockerfile
+    depends_on:
+      - mongo1
+    networks:
+      - codeAdvisors-network
+    entrypoint:
+      [
+        "bash",
+        "-c",
+        "sleep 10 && mongosh --host mongo1:27017 config-replica.js && sleep 10",
+      ]
+    restart: "no"
+
+  # # MongoDB Primary
+  # mongo-primary:
+  #   container_name: mongo-primary
+  #   image: mongo:7.0-jammy
+  #   hostname: mongo-primary
+  #   command: ["--replSet", "rs", "--bind_ip", "0.0.0.0,mongo-primary", "--keyFile", "/etc/mongodb/pki/keyfile"]
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - "mongo-primary-data:/data/db"
+  #     - "./scripts/mongo/rs_keyfile:/etc/mongodb/pki/keyfile"
+  #     - "./scripts/mongo/init.js:/docker-entrypoint-initdb.d/init-mongo.js"
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: Code@Advisors2024
+  #   networks:
+  #     - codeAdvisors-network
+  #   healthcheck:
+  #     test: echo "try {rs.status()} catch(err) {rs.initiate({_id:'rs',members:[{_id:0,host:'mongo-primary:27017',priority:2},{_id:1,host:'mongo-replica-1:27018',priority:1},{_id:2,host:'mongo-replica-2:27019',priority:1}]})}" | mongosh --quiet --port 27017 -u admin -p Code@Advisors2024 --authenticationDatabase admin
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 30s
+
+  # # MongoDB Replica 1
+  # mongo-replica-1:
+  #   container_name: mongo-replica-1
+  #   image: mongo:7.0-jammy
+  #   hostname: mongo-replica-1
+  #   command: ["--replSet", "rs", "--bind_ip", "0.0.0.0,mongo-replica-1", "--keyFile", "/etc/mongodb/pki/keyfile"]
+  #   ports:
+  #     - "27018:27017"
+  #   volumes:
+  #     - "mongo-replica-1-data:/data/db"
+  #     - "./scripts/mongo/rs_keyfile:/etc/mongodb/pki/keyfile"
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: Code@Advisors2024
+  #   networks:
+  #     - codeAdvisors-network
+
+  # # MongoDB Replica 2
+  # mongo-replica-2:
+  #   container_name: mongo-replica-2
+  #   image: mongo:7.0-jammy
+  #   hostname: mongo-replica-2
+  #   command: ["--replSet", "rs", "--bind_ip", "0.0.0.0,mongo-replica-2", "--keyFile", "/etc/mongodb/pki/keyfile"]
+  #   ports:
+  #     - "27019:27017"
+  #   volumes:
+  #     - "mongo-replica-2-data:/data/db"
+  #     - "./scripts/mongo/rs_keyfile:/etc/mongodb/pki/keyfile"
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: Code@Advisors2024
+  #   networks:
+  #     - codeAdvisors-network
