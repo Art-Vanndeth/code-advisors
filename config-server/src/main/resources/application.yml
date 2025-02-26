@@ -19,7 +19,7 @@ spring:
         git:
 #          uri: https://github.com/CodeAdvisor-ISTAD/configuration-CodeAdvisors.git
           uri: https://github.com/Art-Vanndeth/code-advisors.git
-          search-paths: '/codeAdvisors-configuration/service/**'
+          search-paths: '/code-advisors-configuration/service/**'
           default-label: main
 
 server:
