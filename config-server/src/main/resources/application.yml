@@ -17,13 +17,13 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/CodeAdvisor-ISTAD/configuration-CodeAdvisors.git
-          search-paths: '/service/**'
+#          uri: https://github.com/CodeAdvisor-ISTAD/configuration-CodeAdvisors.git
+          uri: https://github.com/Art-Vanndeth/code-advisors.git
+          search-paths: '/codeAdvisors-configuration/service/**'
           default-label: main
 
-
 server:
-  port: 8888
+  port: 9999
 
 eureka:
   instance:
@@ -32,7 +32,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://202.178.125.77:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
 
 
 management:
