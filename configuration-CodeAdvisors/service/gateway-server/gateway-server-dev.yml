@@ -1,54 +1,29 @@
 server:
   port: 8168
-
-# spring:
-#   security:
-#     oauth2:
-#       client:
-#         provider:
-# #          google:
-# #            authorization-uri: https://accounts.google.com/o/oauth2/auth
-# #            token-uri: https://accounts.google.com/o/oauth2/token
-# #            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-# #            user-name-attribute: sub
-#           code-advisor:
-#             issuer-uri: http://127.0.0.1:9090
-#             # authorization-uri: http://127.0.0.1:9090/oauth2/authorize
-#             # token-uri: http://127.0.0.1:9090/oauth2/token
-#         registration:
-# #           Register google Service
-# #          google:
-# #            provider: google
-# #            client-id: 897037474382-1eipe3mffu6ielod7kma05fbc1h3siic.apps.googleusercontent.com
-# #            client-secret: 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
-# #            authorization-grant-type:
-# #              - authorization_code
-# #            scope: openid, profile, email
-# #            redirect-uri: http://localhost:8168/
-# #            client-authentication-method: client_secret_post
-
-#           # Register CodeAdvisor Service
-#           code-advisor:
-#             provider: code-advisor
-#             client-id: code-advisor
-#             client-secret: qwerqwer
-#             authorization-grant-type:
-#               - authorization_code
-#             scope: openid, profile, email
-#             redirect-uri: http://127.0.0.1:8168/login/oauth2/code/code-advisor
 spring:
   security:
     oauth2:
       client:
         provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://accounts.google.com/o/oauth2/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
           code-advisor:
-            issuer-uri: http://127.0.0.1:9090 #https://identity.code-advisors.istad.co  # 
-            # authorization-uri: https://identity.code-advisors.istad.co/oauth2/authorize
-            # token-uri: https://identity.code-advisors.istad.co/oauth2/token
+            issuer-uri: http://127.0.0.1:9090
             authorization-uri: http://127.0.0.1:9090/oauth2/authorize
             token-uri: http://127.0.0.1:9090/oauth2/token
         registration:
-          # Register CodeAdvisor Service
+          google:
+            provider: google
+            client-id: 897037474382-1eipe3mffu6ielod7kma05fbc1h3siic.apps.googleusercontent.com
+            client-secret: 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
+            authorization-grant-type:
+             - authorization_code
+            scope: openid, profile, email
+            redirect-uri: http://127.0.0.1:8168/
+            client-authentication-method: client_secret_post
           code-advisor:
             provider: code-advisor
             client-id: code-advisor
@@ -56,7 +31,7 @@ spring:
             authorization-grant-type:
               - authorization_code
             scope: openid, profile, email, ADMIN, USER
-            redirect-uri: http://127.0.0.1:8168/login/oauth2/code/code-advisor #https://code-advisors.istad.co/login/oauth2/code/code-advisor  
+            redirect-uri: http://127.0.0.1:8168/login/oauth2/code/code-advisor
             client-authentication-method:
               - client_secret_post
               - client_secret_basic

@@ -118,7 +118,8 @@ export default function NavbarComponent() {
                 ចូលប្រើ
               </Button>
               <Button
-                  onClick={() => route.push('https://identity.code-advisors.istad.co/register')}
+                  // onClick={() => route.push('https://identity.code-advisors.istad.co/register')}
+                  onClick={() => route.push('http://127.0.0.1:9090/register')}
                   className="text-white bg-primary rounded-[5px] hover:bg-primary-dark transition-colors"
               >
                 បង្កើតគណនី

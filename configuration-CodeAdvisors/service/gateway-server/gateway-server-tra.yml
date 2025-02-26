@@ -3,31 +3,6 @@ server:
   forward-headers-strategy: framework
       
 spring:
-  # security:
-  #   oauth2:
-  #     client:
-  #       provider:
-  #         nextjs:
-  #           issuer-uri: https://khotixs-auth.devkh.asia
-  #           authorization-uri: https://khotixs-auth.devkh.asia/oauth2/authorize
-  #           token-uri: https://khotixs-auth.devkh.asia/oauth2/token
-  #       #            user-info-uri: ${USER_INFO_URI}
-
-  #       registration:
-  #         nextjs:
-  #           provider: nextjs
-  #           client-id: nextjs
-  #           client-secret: nextjs123
-  #           authorization-grant-type:
-  #             - authorization_code
-  #           scope:
-  #             - openid
-  #             - profile
-  #             - email
-  #           redirect-uri: https://code-advisors.istad.co/login/oauth2/code/nextjs
-  #           client-authentication-method:
-  #             - client_secret_post
-  #             - client_secret_basic
   security:
     oauth2:
       client:

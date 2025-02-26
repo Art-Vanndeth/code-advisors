@@ -8,7 +8,6 @@ spring:
   cloud:
     config:
       uri: http://202.178.125.77:9999
-#      uri: http://167.172.78.79:8888
 
 management:
   endpoints:

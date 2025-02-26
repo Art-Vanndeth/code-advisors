@@ -148,9 +148,12 @@ export default function MobileSidebarLogin({ onClose }: MobileSidebarLoginProps)
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600">
                                 <LogOut className="mr-2 h-4 w-4" />
-                                <span onClick={() => router.push("http://202.178.125.77:9090/logout")}>
-                                        ចាកចេញ
-                                    </span>
+                                <span 
+                                // onClick={() => router.push("http://202.178.125.77:9090/logout")}
+                                    onClick={() => router.push("http://127.0.0.1:9090/logout")}
+                                >
+                                    ចាកចេញ
+                                </span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

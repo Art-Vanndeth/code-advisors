@@ -158,7 +158,8 @@ export default function MobileSidebar({ onClose }: MobileSidebarProps) {
                         <Button
                             onClick={() => {
                                 onClose();
-                                route.push('https://identity.code-advisors.istad.co/register');
+                                // route.push('https://identity.code-advisors.istad.co/register');
+                                route.push('http://127.0.0.1:9090/register');
                             }}
                             className="w-full text-white bg-primary rounded-[5px] hover:bg-primary-dark transition-colors"
                         >
