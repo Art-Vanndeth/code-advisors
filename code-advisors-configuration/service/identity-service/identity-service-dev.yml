@@ -14,9 +14,10 @@ spring:
             client-secret: cca664d184ea46d005f9602f7e9ab1fbb560ba07
   kafka:
     bootstrap-servers:
-      - 34.143.151.53:29093
-      - 34.143.151.53:39093
-      - 34.143.151.53:49093
+      - 127.0.0.1:9092
+#      - 34.143.151.53:29093
+#      - 34.143.151.53:39093
+#      - 34.143.151.53:49093
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -33,14 +34,14 @@ spring:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         spring.json.value.default.type: co.istad.identityservice.config.kafka.eventClass.UpdateUserEvent
 
-    security:
-      protocol: SSL
-    ssl:
-      trust-store-location: classpath:kafka.server.truststore.jks
-      trust-store-password: password123
-      key-store-location: classpath:kafka.server.keystore.jks
-      key-store-password: password123
-      key-password: password123
+#    security:
+#      protocol: SSL
+#    ssl:
+#      trust-store-location: classpath:kafka.server.truststore.jks
+#      trust-store-password: password123
+#      key-store-location: classpath:kafka.server.keystore.jks
+#      key-store-password: password123
+#      key-password: password123
   jpa:
     hibernate:
       ddl-auto: update
@@ -82,7 +83,7 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
 
 code-advisors:
   ip: 127.0.0.1
